@@ -15,34 +15,35 @@
 
 
 # import libraries
+from PIL import Image
 import numpy as np
-import sys
+import matplotlib.pyplot as plt
 
-# gaussian noise adder
-def addGaussian(img, std):
-  size  = img.shape
-  noise = np.random.normal(0, std, size)
-  out   = img.astype(float) + noise
-  out   = np.clip(out, 0, 255)
-  return out.astype(img.dtype)
+# read function
+def imageRead(filename):
+  img  = Image.open(filename)
+  data = np.asarray(img)
+  img.close()
+  return data
 
-# apply level and gain
-def levelGain(img, level, gain):
-  out   = img.astype(float)
-  out   = gain * out + level;
-  return out.astype(img.dtype)
+# write function
+def imageWrite(filename, data):
+  img  = Image.fromarray(data)
+  img.save(filename)
+
+# display image
+def imageDisplay(img):
+  plt.figure()
+  plt.imshow(img)
+  plt.show()
+
+# create monochrome image
+def imageMono(img):
+  return np.mean(img, 2)
 
 # command line interface
 if __name__ == "__main__":
-  import readImage
-  img = readImage.readImage(sys.argv[1])
-  if len(sys.argv) > 4:
-    level = float(sys.argv[3])
-    gain  = float(sys.argv[4])
-    img   = levelGain(img, level, gain)
-  if len(sys.argv) > 2:
-    std   = float(sys.argv[2])
-  else:
-    std   = 1.0
-  img = addGaussian(img, std)
-  readImage.displayImage(img)
+  import sys
+  img = imageRead(sys.argv[1])
+  print(img.shape)
+  imageDisplay(img)
