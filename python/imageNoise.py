@@ -31,20 +31,25 @@ def levelGain(img, level, gain):
   out   = gain * out + level;
   return out.astype(img.dtype)
 
+# apply model parameters
+def applyParams(img, params):
+  if 'img_level' in params and 'img_gain' in params:
+    level = float(params['img_level'])
+    gain  = float(params['img_gain'])
+    img   = levelGain(img, level, gain)
+  if 'img_std' in params:
+    std   = float(params['img_std'])
+    img   = addGaussian(img, std)
+  return img
+
 # command line interface
 if __name__ == "__main__":
-  import imageUtils
   import sys
+  import imageUtils
+  import argParse
   img = imageUtils.imageRead(sys.argv[1])
-  if len(sys.argv) > 4:
-    level = float(sys.argv[3])
-    gain  = float(sys.argv[4])
-    img   = levelGain(img, level, gain)
-  if len(sys.argv) > 2:
-    std   = float(sys.argv[2])
-  else:
-    std   = 50.0
-  img = addGaussian(img, std)
-  if len(sys.argv) > 5:
-    imageUtils.imageWrite(sys.argv[5], img)
+  params = argParse.parse(sys.argv[2:])
+  img = applyParams(img, params)
+  if 'out_file' in params:
+    imageUtils.imageWrite(params['out_file'], img)
   imageUtils.imageDisplay(img)

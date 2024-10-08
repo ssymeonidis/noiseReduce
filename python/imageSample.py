@@ -39,6 +39,7 @@ def sample(src, window_size, num_samples):
     out[i,:] = src[x:x+window_size[0],y:y+window_size[1]]
   return out
 
+# sample2 function
 def sample2(src1, src2, window_size, num_samples):
   (dim, max_x, max_y) = getDim(src1, window_size, num_samples)
   out1 = np.empty(dim, src1.dtype)
@@ -55,35 +56,13 @@ if __name__ == "__main__":
   import imageUtils
   import matplotlib.pyplot as plt
   import sys
-  if len(sys.argv) < 5:
-    img = imageUtils.imageRead(sys.argv[1])
-    x   = int(sys.argv[2])
-    y   = int(sys.argv[3])
-    out = sample(img, [x, y], 16)
-    plt.figure()
-    for i in range(16):
-      ax = plt.subplot(4, 4, i+1)
-      plt.imshow(out[i,:])
-      plt.axis("off")
-    plt.show()
-  else:
-    img1 = imageUtils.imageRead(sys.argv[1])
-    img2 = imageUtils.imageRead(sys.argv[2])
-    x    = int(sys.argv[3])
-    y    = int(sys.argv[4])
-    (out1, out2) = sample2(img1, img2, [x, y], 16)
-    plt.figure()
-    for i in range(8):
-      if i < 4:
-        idx = i
-      else:
-        idx = i+4
-      print(idx+1)
-      ax = plt.subplot(4, 4, idx+1)
-      plt.imshow(out1[i,:])
-      plt.axis("off")
-      print(idx+5)
-      ax = plt.subplot(4, 4, idx+5)
-      plt.imshow(out2[i,:])
-      plt.axis("off")
-    plt.show()
+  img = imageUtils.imageRead(sys.argv[1])
+  x   = int(sys.argv[2])
+  y   = int(sys.argv[3])
+  out = sample(img, [x, y], 16)
+  plt.figure()
+  for i in range(16):
+    ax = plt.subplot(4, 4, i+1)
+    plt.imshow(out[i,:])
+    plt.axis("off")
+  plt.show()

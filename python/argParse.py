@@ -14,36 +14,18 @@
 #################################################################
 
 
-# import libraries
-from PIL import Image
-import numpy as np
-import matplotlib.pyplot as plt
-
-# read function
-def imageRead(filename):
-  img  = Image.open(filename)
-  data = np.asarray(img)
-  img.close()
-  return data
-
-# write function
-def imageWrite(filename, data):
-  img  = Image.fromarray(data)
-  img.save(filename)
-
-# display image
-def imageDisplay(img):
-  plt.figure()
-  plt.imshow(img)
-  plt.show()
-
-# conver to monochrome
-def imageMono(img):
-  return np.mean(img, 2)
+# process arguments
+def parse(args):
+  out = dict()
+  for arg in args:
+    vals = arg.split('=')
+    if len(vals) != 2:
+      print('warning: non parseable argument')
+    out[vals[0]] = vals[1]
+  return out
 
 # command line interface
 if __name__ == "__main__":
   import sys
-  img = imageRead(sys.argv[1])
-  print(img.shape)
-  imageDisplay(img)
+  out = parse(sys.argv[1:])
+  print(out)
