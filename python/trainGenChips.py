@@ -20,8 +20,12 @@ import imageUtils
 import imageNoise
 import imageSample
 
-format1   = "../train/src%05d.bmp"
-format2   = "../train/out%05d.bmp"
+list_dir  = "../train"
+prefix1   = "src"
+prefix2   = "out"
+sformat   = "%05d.bmp"
+format1   = list_dir + "/" + prefix1 + sformat
+format2   = list_dir + "/" + prefix2 + sformat
 
 # process single image
 def processImage(filename, num_samples, window_size, params, idx):
@@ -45,7 +49,7 @@ def processList(filename_list, num_samples_list, window_size, params):
     idx = idx + num_samples_list[i]
 
 # parse command line args
-def parse(args):
+def parseCommandLine(args):
   filename_list     = list()
   num_samples_list  = list()
   idx               = 0
@@ -61,10 +65,34 @@ def parse(args):
   params = argParse.parse(args[idx:])     
   return (filename_list, num_samples_list, params)
 
+# read images from training folder
+def read():
+  import os.path
+  samples = 0
+  files   = os.listdir('../train')
+  for file in files:
+    if file[:len(prefix1)] == prefix1:
+      samples += 1
+  tmp     = imageUtils.imageRead(format1 % 0)
+  dimIn   = tmp.ndim
+  sizeIn  = np.shape(tmp)
+  if dimIn == 2:
+    dim   = (samples, sizeIn[0], sizeIn[1])
+  else:
+    dim   = (samples, sizeIn[0], sizeIn[1], sizeIn[2])
+  src1    = np.empty(dim, 'uint8')
+  src2    = np.empty(dim, 'uint8')
+  for i in range(samples):
+    file1 = format1 % i
+    file2 = format2 % i
+    src1[i,:] = imageUtils.imageRead(file1)
+    src2[i,:] = imageUtils.imageRead(file2)
+  return (src1, src2)  
+
 # command line interface
 if __name__ == "__main__":
   import sys
   import argParse
-  (filename_list, num_samples_list, params) = parse(sys.argv[1:])
+  (filename_list, num_samples_list, params) = parseCommandLine(sys.argv[1:])
   window_size = (int(params['window_size']), int(params['window_size']))
   processList(filename_list, num_samples_list, window_size, params)
