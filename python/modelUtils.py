@@ -19,3 +19,7 @@ import tensorflow as tf
 
 def printSummary(model):
   model.summary()
+
+def plotModel(model, filename='../model/model.png'):
+  tf.keras.utils.plot_model(model, to_file=filename, show_shapes=True)
+

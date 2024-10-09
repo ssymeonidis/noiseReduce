@@ -25,17 +25,17 @@ def downsample(x, num_filters, num_conv, dropout):
   if dropout > 0:
     p  = tf.keras.layers.Dropout(dropout)(p)
   return p, x
-  
+
 # downsample fnc
-def upsample(x, p, num_filters, num_conv, dropout):
+def upsample(x, f, num_filters, num_conv, dropout):
   x    = tf.keras.layers.Conv2DTranspose(num_filters, 3, 2, padding="same")(x)
-  x    = tf.keras.layers.concatenate([x, p])
+  x    = tf.keras.layers.concatenate([x, f])
   if dropout > 0:
-    p  = tf.keras.layers.Dropout(dropout)(x)
+    x  = tf.keras.layers.Dropout(dropout)(x)
   for i in range(num_conv):
     x  = tf.keras.layers.Conv2D(num_filters, kernel_size=(3,3), kernel_initializer='he_normal', activation='relu', padding='same')(x)
   return x
-  
+
 # bottleneck fnc
 def bottleneck(x, num_filters, num_conv):
   for i in range(num_conv):
@@ -56,7 +56,7 @@ def gen(tensor_size, num_layers, num_filters, num_conv=1, dropout=0, is_final_co
     x        = upsample(x, f[0], num_filters[0], num_conv, dropout)
   else:
     x        = tf.keras.layers.UpSampling2D(size=(2,2))(x)
-  x          = tf.keras.layers.Conv2D(tensor_size[2], kernel_size=(3,3), kernel_initializer='he_normal', activation='relu', padding='same')(x)
+  x          = tf.keras.layers.Conv2D(tensor_size[2], kernel_size=(3,3), kernel_initializer='he_normal', activation='softmax', padding='same')(x)
   out        = tf.keras.Model(src, x)
   return out
 

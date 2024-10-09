@@ -21,3 +21,4 @@ pip3 install tensorflow
 pip3 install matplotlib
 pip3 install pyqt6
 pip3 install opencv-python
+pip3 install pydot
