@@ -14,10 +14,8 @@
 #################################################################
 
 
-python3 -m venv venv
-source venv/bin/activate
-pip3 install --upgrade pip
-pip3 install tensorflow
-pip3 install matplotlib
-pip3 install pyqt6
-pip3 install opencv-python
+# import libraries
+import tensorflow as tf
+
+def printSummary(model):
+  model.summary()

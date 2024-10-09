@@ -30,7 +30,7 @@ def getDim(src, window_size, num_samples):
   return (dim, max_x, max_y)
 
 # sample function
-def sample(src, window_size, num_samples):
+def sampleRnd(src, window_size, num_samples):
   (dim, max_x, max_y) = getDim(src, window_size, num_samples)
   out = np.empty(dim, src.dtype)
   for i in range(num_samples):
@@ -39,8 +39,8 @@ def sample(src, window_size, num_samples):
     out[i,:] = src[x:x+window_size[0],y:y+window_size[1]]
   return out
 
-# sample2 function
-def sample2(src1, src2, window_size, num_samples):
+# sample function
+def sampleRnd2(src1, src2, window_size, num_samples):
   (dim, max_x, max_y) = getDim(src1, window_size, num_samples)
   out1 = np.empty(dim, src1.dtype)
   out2 = np.empty(dim, src2.dtype)
@@ -53,13 +53,13 @@ def sample2(src1, src2, window_size, num_samples):
 
 # command line interface
 if __name__ == "__main__":
-  import imageUtils
+  import imageUtilsPIL
   import matplotlib.pyplot as plt
   import sys
-  img = imageUtils.imageRead(sys.argv[1])
+  img = imageUtilsPIL.imageRead(sys.argv[1])
   x   = int(sys.argv[2])
   y   = int(sys.argv[3])
-  out = sample(img, [x, y], 16)
+  out = sampleRnd(img, [x, y], 16)
   plt.figure()
   for i in range(16):
     ax = plt.subplot(4, 4, i+1)

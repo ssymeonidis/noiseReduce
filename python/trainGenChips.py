@@ -15,10 +15,11 @@
 
 
 # import libraries
-import numpy as np
-import imageUtils
+import imageUtilsPIL
 import imageNoise
 import imageSample
+import numpy as np
+import os.path
 
 list_dir  = "../train"
 prefix1   = "src"
@@ -48,6 +49,47 @@ def processList(filename_list, num_samples_list, window_size, params):
     processImage(filename_list[i], num_samples_list[i], window_size, params, idx)
     idx = idx + num_samples_list[i]
 
+# count files
+def countFiles():
+  samples = 0
+  files   = os.listdir(list_dir)
+  for file in files:
+    if file[:len(prefix1)] == prefix1:
+      samples += 1
+  return samples
+
+# get dimension
+def getDim(samples):
+  tmp     = imageUtilsPIL.imageRead(format1 % 0)
+  dimIn   = tmp.ndim
+  sizeIn  = np.shape(tmp)
+  if dimIn == 2:
+    dim   = (samples, sizeIn[0], sizeIn[1])
+  else:
+    dim   = (samples, sizeIn[0], sizeIn[1], sizeIn[2])
+  return dim
+
+# read images from training folder
+def readTrainDir():
+  samples = countFiles()
+  dim     = getDim(samples)
+  src1    = np.empty(dim, 'uint8')
+  src2    = np.empty(dim, 'uint8')
+  for i in range(samples):
+    file1 = format1 % i
+    file2 = format2 % i
+    src1[i,:] = imageUtilsPIL.imageRead(file1)
+    src2[i,:] = imageUtilsPIL.imageRead(file2)
+  return (src1, src2)  
+
+# save numpy array to file (recommend npy ext)
+def save(filename, data):
+  np.save(filename, data, allow_pickle=False)
+
+# load numpy array from file (recommend npy ext)
+def load(filename):
+  return np.load(filename, allow_pickle=False)
+
 # parse command line args
 def parseCommandLine(args):
   filename_list     = list()
@@ -64,30 +106,6 @@ def parseCommandLine(args):
     idx += 1
   params = argParse.parse(args[idx:])     
   return (filename_list, num_samples_list, params)
-
-# read images from training folder
-def read():
-  import os.path
-  samples = 0
-  files   = os.listdir('../train')
-  for file in files:
-    if file[:len(prefix1)] == prefix1:
-      samples += 1
-  tmp     = imageUtils.imageRead(format1 % 0)
-  dimIn   = tmp.ndim
-  sizeIn  = np.shape(tmp)
-  if dimIn == 2:
-    dim   = (samples, sizeIn[0], sizeIn[1])
-  else:
-    dim   = (samples, sizeIn[0], sizeIn[1], sizeIn[2])
-  src1    = np.empty(dim, 'uint8')
-  src2    = np.empty(dim, 'uint8')
-  for i in range(samples):
-    file1 = format1 % i
-    file2 = format2 % i
-    src1[i,:] = imageUtils.imageRead(file1)
-    src2[i,:] = imageUtils.imageRead(file2)
-  return (src1, src2)  
 
 # command line interface
 if __name__ == "__main__":
