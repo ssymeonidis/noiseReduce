@@ -32,3 +32,15 @@ def copyFiles(path, dst, prefix=''):
     head, tail = ntpath.split(file)
     out = os.path.join(dst, prefix + tail)
     shutil.copy2(file, out)
+
+# change permissions
+def chmod(path, permission):
+  files = getFiles(path)
+  for file in files:
+    os.chmod(file, permission)
+
+# remove files from directory
+def rm(path):
+  files = getFiles(path)
+  for file in files:
+    os.remove(file)

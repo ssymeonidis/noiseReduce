@@ -32,7 +32,7 @@ def levelGain(img, level, gain):
   return out.astype(img.dtype)
 
 # apply model parameters
-def applyParams(img, params):
+def processImg(img, params):
   if 'img_level' in params and 'img_gain' in params:
     level = float(params['img_level'])
     gain  = float(params['img_gain'])
@@ -41,15 +41,41 @@ def applyParams(img, params):
     std   = float(params['img_std'])
     img   = addGaussian(img, std)
   return img
+  
+# get output file params
+def getOutParams(params):
+  if 'out_dir' in params:
+    dst     = params['out_dir']
+  else:
+    dst     = '.'
+  if 'out_prefix' in params:
+    prefix  = params['out_prefix']
+  else:
+    prefix  = ''
+  return dst, prefix
+  
+# process files
+def processFiles(src, params):
+  import ntpath
+  import os
+  import fileUtils
+  import imageUtilsPIL
+  files  = fileUtils.getFiles(src)
+  dst, prefix  = getOutParams(params)
+  for file in files:
+    img  = imageUtilsPIL.imageRead(file)
+    img  = processImg(img, params)
+    if 'out_disp' in params:
+      imageUtilsPIL.imageDisplay(img)
+      break
+    else:  
+      head, tail = ntpath.split(file)
+      out = os.path.join(dst, prefix + tail)
+      imageUtilsPIL.imageWrite(out, img)
 
 # command line interface
 if __name__ == "__main__":
   import sys
-  import imageUtils
   import argParse
-  img = imageUtils.imageRead(sys.argv[1])
-  params = argParse.parse(sys.argv[2:])
-  img = applyParams(img, params)
-  if 'out_file' in params:
-    imageUtils.imageWrite(params['out_file'], img)
-  imageUtils.imageDisplay(img)
+  params  = argParse.parse(sys.argv[2:])
+  processFiles(sys.argv[1], params)
