@@ -27,7 +27,6 @@ def getFiles(path):
 # copy files to directory w/ prefix
 def copyFiles(path, dst, prefix=''):
   files = getFiles(path)
-  print(files)
   for file in files:
     head, tail = ntpath.split(file)
     out = os.path.join(dst, prefix + tail)
@@ -40,7 +39,7 @@ def chmod(path, permission):
     os.chmod(file, permission)
 
 # remove files from directory
-def rm(path):
+def remove(path):
   files = getFiles(path)
   for file in files:
     os.remove(file)

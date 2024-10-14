@@ -16,19 +16,39 @@
 
 # import library
 import fileUtils
+import datasetUtils
 import imageNoise
+import imageSample
 import os
 
 # workspace info
-src_path_1  = '/home/simeon/Data/BSDS500/BSDS500/data/images/test/*.jpg'
-src_path_2  = '/home/simeon/Data/BSDS500/BSDS500/data/images/train/*.jpg'
-image_path  = '../images'
-noise                = dict()
-noise['out_dir']     = image_path
-noise['out_prefix']  = 'src_'
-noise['img_level']   = 32
-noise['img_gain']    = 0.75
-noise['img_std']     = 30
+src_path_1    = '/home/simeon/Data/BSDS500/BSDS500/data/images/test/*.jpg'
+src_path_2    = '/home/simeon/Data/BSDS500/BSDS500/data/images/train/*.jpg'
+image_path    = '../images'
+image_files   = image_path + '/*.jpg'
+train_path    = '../train'
+train_files   = train_path + '/*.bmp'
+test_samples  = 1000
+data_path     = '../model'
+data_files    = data_path + '.*.npy'
+noise                 = dict()
+noise['out_dir']      = image_path
+noise['out_prefix']   = 'src_'
+noise['img_level']    = 32
+noise['img_gain']     = 0.75
+noise['img_std']      = 30
+sample                = dict()
+sample['smpl_type']   = 'fixed'
+sample['smpl_size']   = 40
+sample['smpl_skip']   = 40
+sample['out_dir']     = train_path
+sample['out_format']  = '%s_%05d.%s'
+sample['out_ext']     = 'bmp'
+
+# clear working directories
+fileUtils.remove(image_files)
+fileUtils.remove(train_files)
+fileUtils.remove(data_files)
 
 # copy repo images to local directory
 fileUtils.copyFiles(src_path_1, image_path, 'out_')
@@ -37,4 +57,16 @@ fileUtils.copyFiles(src_path_2, image_path, 'out_')
 # add noise to images
 imageNoise.processFiles(src_path_1, noise)
 imageNoise.processFiles(src_path_2, noise)
-fileUtils.chmod(image_path, 0o664)
+fileUtils.chmod(image_files, 0o664)
+
+# sample images
+imageSample.processFiles(image_files, sample)
+
+# read/split samples
+src, out = datasetUtils.readImages(train_path, 'src_', 'out_')
+src_train, src_test = datasetUtils.split(src, test_samples)
+out_train, out_test = datasetUtils.split(out, test_samples)
+datasetUtils.save(data_path + '/src_train.npy', src_train)
+datasetUtils.save(data_path + '/src_test.npy',  src_test)
+datasetUtils.save(data_path + '/out_train.npy', out_train)
+datasetUtils.save(data_path + '/out_test.npy',  out_train)
