@@ -39,7 +39,7 @@ def processImg(img, model):
       x1    = j  * size1[2]
       x2    = x1 + size1[2]
       chip  = img[y1:y2,x1:x2,:]
-      tensor[idx,:] = chip
+      tensor[idx,:]  = chip
       idx   = idx + 1
   tensor    = tensor / 255
   results   = model.predict(tensor)
