@@ -42,7 +42,8 @@ def processImg(img, model):
       tensor[idx,:] = chip
       idx   = idx + 1
   tensor    = tensor / 255
-  results   = model.predict(tensor) * 255.0
+  results   = model.predict(tensor)
+  results   = 255.0 * np.clip(results, 0.0, 1.0)
   results   = results.astype(np.uint8)
   out       = np.empty(size3, np.uint8)
   idx       = 0
