@@ -29,8 +29,10 @@ image_files   = image_path + '/*.jpg'
 train_path    = '../train'
 train_files   = train_path + '/*.bmp'
 test_samples  = 1000
-data_path     = '../model'
+data_path     = '../models'
 data_files    = data_path + '.*.npy'
+
+# config info
 noise                 = dict()
 noise['out_dir']      = image_path
 noise['out_prefix']   = 'src_'
@@ -64,9 +66,11 @@ imageSample.processFiles(image_files, sample)
 
 # read/split samples
 src, out = datasetUtils.readImages(train_path, 'src_', 'out_')
+src      = datasetUtils.normalize(src)
+out      = datasetUtils.normalize(out)
 src_train, src_test = datasetUtils.split(src, test_samples)
 out_train, out_test = datasetUtils.split(out, test_samples)
-datasetUtils.save(data_path + '/src_train.npy', src_train)
-datasetUtils.save(data_path + '/src_test.npy',  src_test)
-datasetUtils.save(data_path + '/out_train.npy', out_train)
-datasetUtils.save(data_path + '/out_test.npy',  out_train)
+datasetUtils.save(data_path + '/BSDS500_src_train.npy', src_train)
+datasetUtils.save(data_path + '/BSDS500_src_test.npy',  src_test)
+datasetUtils.save(data_path + '/BSDS500_out_train.npy', out_train)
+datasetUtils.save(data_path + '/BSDS500_out_test.npy',  out_test)

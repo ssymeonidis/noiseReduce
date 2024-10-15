@@ -51,8 +51,13 @@ def readImages(folder, src_prefix, out_prefix):
     file_out    = os.path.join(folder, out_prefix + tail[len(src_prefix):])
     src[idx,:]  = imageUtilsPIL.imageRead(file_src)
     out[idx,:]  = imageUtilsPIL.imageRead(file_out)
+    idx         = idx + 1
   return src, out
-  
+
+# normalize dataset
+def normalize(data):
+  return data.astype(np.float32) / 255.0
+
 # split dataset into training and test subsets
 def split(dataset, num_test_samples):
   mid           = np.shape(dataset)[0] - num_test_samples
