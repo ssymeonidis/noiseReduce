@@ -72,3 +72,18 @@ def save(filename, data):
 # load numpy array from file (recommend npy ext)
 def load(filename):
   return np.load(filename, allow_pickle=False)
+
+# save numpy array
+def saveSet(filename, src_train, out_train, src_test, out_test):
+  save(filename + 'src_train.npy', src_train)
+  save(filename + 'out_train.npy', out_train)
+  save(filename + 'src_test.npy',  src_test)
+  save(filename + 'out_test.npy',  out_test)
+
+# load numpy array set from files
+def loadSet(filename):
+  src_train     = load(filename + 'src_train.npy')
+  out_train     = load(filename + 'out_train.npy')
+  src_test      = load(filename + 'src_test.npy')
+  out_test      = load(filename + 'out_test.npy')
+  return src_train, out_train, src_test, out_test

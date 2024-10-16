@@ -43,6 +43,8 @@ def bottleneck(x, num_filters, num_conv):
 
 # create tensorflow model
 def gen(tensor_size, num_layers, num_filters, num_conv=1, dropout=0, is_final_conv2d=False):
+  if not type(num_filters) is tuple:
+    num_filters = (num_filters,) * (num_layers + 1)
   src  = tf.keras.layers.Input(tensor_size)
   x    = downsample(src, num_filters[0], num_conv, dropout)
   for i in range(num_layers-1):
@@ -61,4 +63,4 @@ def gen(tensor_size, num_layers, num_filters, num_conv=1, dropout=0, is_final_co
 
 # default configuration
 def default(tensor_size):
-  return gen(tensor_size, 2, (64, 64, 64, 64))
+  return gen(tensor_size, 2, 64)

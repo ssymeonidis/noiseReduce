@@ -44,6 +44,8 @@ def bottleneck(x, num_filters, num_conv):
 
 # create tensorflow model
 def gen(tensor_size, num_layers, num_filters, num_conv=1, dropout=0, is_final_conv2d=True):
+  if not type(num_filters) is tuple:
+    num_filters  = (num_filters,) * (num_layers + 1)
   src        = tf.keras.layers.Input(tensor_size)
   f          = [None] * num_layers
   x, f[0]    = downsample(src, num_filters[0], num_conv, dropout)
@@ -56,10 +58,10 @@ def gen(tensor_size, num_layers, num_filters, num_conv=1, dropout=0, is_final_co
     x        = upsample(x, f[0], num_filters[0], num_conv, dropout)
   else:
     x        = tf.keras.layers.UpSampling2D(size=(2,2))(x)
-  x          = tf.keras.layers.Conv2D(tensor_size[2], kernel_size=(3,3), kernel_initializer='he_normal', activation='softmax', padding='same')(x)
+  x          = tf.keras.layers.Conv2D(tensor_size[2], kernel_size=(3,3), kernel_initializer='he_normal', activation='relu', padding='same')(x)
   out        = tf.keras.Model(src, x)
   return out
 
 # default configuration
 def default(tensor_size):
-  return gen(tensor_size, 3, (64, 128, 256, 512))
+  return gen(tensor_size, 2, (32, 64, 128))

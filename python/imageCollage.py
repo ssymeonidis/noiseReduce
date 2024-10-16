@@ -24,9 +24,7 @@ import math
 def gen(img1, img2):
   size  = np.shape(img1)
   x     = math.floor(size[1] / 2)
-  print(x)
   out   = np.empty(size, 'uint8')
-  print(np.shape(out))
   out[:,:x,:] = img1[:,:x,:]
   out[:,x:,:] = img2[:,x:,:]
   return out
@@ -45,6 +43,5 @@ if __name__ == "__main__":
     file2       = sys.argv[3] + tail
     img1        = imageUtilsPIL.imageRead(file)    
     img2        = imageUtilsPIL.imageRead(file1)
-    print((file, file1, file2))
     out         = gen(img1, img2)
     imageUtilsPIL.imageWrite(file2, out)    

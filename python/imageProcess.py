@@ -20,7 +20,7 @@ import numpy as np
 import math
 
 # main processing function
-def processImg(img, model):
+def processImgGrid(img, model):
   size1     = modelUtils.inputSize(model)
   size2     = np.shape(img)
   blks_y    = math.ceil(float(size2[0]) / float(size1[1]))
@@ -79,7 +79,7 @@ def processFiles(src, model, params):
   dst, prefix = getOutParams(params)
   for file in files:
     img  = imageUtilsPIL.imageRead(file)
-    img  = processImg(img, model)
+    img  = processImgGrid(img, model)
     head, tail = ntpath.split(file)
     out  = os.path.join(dst, prefix + tail)
     imageUtilsPIL.imageWrite(out, img)
