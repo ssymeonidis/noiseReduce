@@ -73,4 +73,4 @@ if __name__ == "__main__":
   src_train, out_train, src_test, out_test = datasetUtils.loadSet(sys.argv[2])
   compile(model, learning_rate)
   model.fit(src_train, out_train, epochs=epochs, validation_data=(src_test, out_test))
-  save(sys.argv[3])
+  save(sys.argv[3], model)

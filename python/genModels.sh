@@ -15,7 +15,9 @@
 
 
 python3 datasetBSDS500.py
-python3 modelUtils.py ../models/arch_MLCNN.json         ../models/BSDS500_  ../models/model_MLCNN_BSDS500.keras
-python3 modelUtils.py ../models/arch_AutoEncoder.json   ../models/BSDS500_  ../models/model_AutoEncoder_BSDS500.keras
-python3 modelUtils.py ../models/arch_Unet.json          ../models/BSDS500_  ../models/model_Unet_BSDS500.keras
-python3 modelUtils.py ../models/arch_DNCNN.json         ../models/BSDS500_  ../models/model_DNCNN_BSDS500.keras
+python3 modelUtils.py ../models/arch_MLCNN.json         ../models/BSDS500_  ../models/model_MLCNN_BSDS500.keras         >> ../models/model_MLCNN_BSDS500.log
+python3 modelUtils.py ../models/arch_AutoEncoder.json   ../models/BSDS500_  ../models/model_AutoEncoder_BSDS500.keras   >> ../models/model_AutoEncoder_BSDS500.log
+python3 modelUtils.py ../models/arch_Unet.json          ../models/BSDS500_  ../models/model_Unet_BSDS500.keras          >> ../models/model_Unet_BSDS500.log
+python3 modelUtils.py ../models/arch_DNCNN.json         ../models/BSDS500_  ../models/model_DNCNN_BSDS500.keras         >> ../models/model_DNCNN_BSDS500.log
+python3 modelUtils.py ../models/arch_RIDNET.json        ../models/BSDS500_  ../models/model_RIDNET_BSDS500.keras        >> ../models/model_RIDNET_BSDS500.log
+
