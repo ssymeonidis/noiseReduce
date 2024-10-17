@@ -1,10 +1,11 @@
 # AI/ML Image Noise Reduction via Tensorflow
 
 This repository implements different Deep Neural Network (DNN) architectures for 
-reducing noise in static images.  These DNN architectures are based of articles
+reducing noise in static images.  These DNN architectures are based off articles
 published by Sunil Belde, Sharath Solomon, and others.  To generate the training
 and validation sets, Gaussian noise was added to public datasets.  However, to
-maximize performance, these should be retrained using representative images.  
+maximize performance, these should be retrained using representative images, i.e.
+taken from the target camera in typical scenes/environments.  
 
 The architectures can be extended for processing video by extending the input to
 4 dimensions, where the fourth dimension be the several frames, and by modifying 
@@ -15,10 +16,10 @@ data.
 ## Neural Network Architectures
 
 The architectures evaluated can be found in the models directory.  'png' files
-plot all the architecture and 'json' files can be read into Tensorflow using the 
-'model_from_json' function.  The input tensor size is (40,40,3) but genModels.py
-can be used to change this size and make modifications to the architecture that
-includes changing number of layers, adding dropout layers, etc.
+plot them and 'json' files can be read in Tensorflow using the 'model_from_json' 
+function.  The input tensor size is (40,40,3) but genModels.py can be modified
+to change this size and to make modifications to the architecture that includes 
+changing number of layers, adding dropout layers, etc.
 
 
 ## Training Data
@@ -30,7 +31,7 @@ should be four 'npy' files created in the 'models' folder.  These contain numpy
 arrays that can be read into python using numpy's 'load' function.  This script
 will also save intermediary outputs in the 'images' and 'train' folders, where
 'images' contain the clean and noise images and 'train' contains the chips with
-sizes matched to the Tensorflow model
+sizes matched to the Tensorflow model.
 
 
 ## Model Training
