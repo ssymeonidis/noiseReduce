@@ -53,6 +53,7 @@ to be saved in the 'results' folder:
 
 ## online resources
 https://medium.com/analytics-vidhya/noise-removal-in-images-using-deep-learning-models-3972544372d2
+https://medium.com/analytics-vidhya/image-denoising-using-deep-learning-dc2b19a3fd54
 https://pyimagesearch.com/2022/02/21/u-net-image-segmentation-in-keras/
 
 ## public datasets
