@@ -14,10 +14,19 @@
 #################################################################
 
 
+# generate deataset
 python3 datasetBSDS500.py
-python3 modelUtils.py ../models/arch_MLCNN.json         ../models/BSDS500_  ../models/model_MLCNN_BSDS500.keras         >> ../models/model_MLCNN_BSDS500.log
-python3 modelUtils.py ../models/arch_AutoEncoder.json   ../models/BSDS500_  ../models/model_AutoEncoder_BSDS500.keras   >> ../models/model_AutoEncoder_BSDS500.log
-python3 modelUtils.py ../models/arch_Unet.json          ../models/BSDS500_  ../models/model_Unet_BSDS500.keras          >> ../models/model_Unet_BSDS500.log
-python3 modelUtils.py ../models/arch_DNCNN.json         ../models/BSDS500_  ../models/model_DNCNN_BSDS500.keras         >> ../models/model_DNCNN_BSDS500.log
-python3 modelUtils.py ../models/arch_RIDNET.json        ../models/BSDS500_  ../models/model_RIDNET_BSDS500.keras        >> ../models/model_RIDNET_BSDS500.log
 
+# train tensorflow models
+python3 modelUtils.py ../models/arch_MLCNN.json        data=../models/BSDS500_  keras=../models/model_MLCNN_BSDS500.keras        >> ../models/model_MLCNN_BSDS500.log
+python3 modelUtils.py ../models/arch_AutoEncoder.json  data=../models/BSDS500_  keras=../models/model_AutoEncoder_BSDS500.keras  >> ../models/model_AutoEncoder_BSDS500.log
+python3 modelUtils.py ../models/arch_Unet.json         dsta=../models/BSDS500_  keras=../models/model_Unet_BSDS500.keras         >> ../models/model_Unet_BSDS500.log
+python3 modelUtils.py ../models/arch_DNCNN.json        data=../models/BSDS500_  keras=../models/model_DNCNN_BSDS500.keras        >> ../models/model_DNCNN_BSDS500.log
+python3 modelUtils.py ../models/arch_RIDNET.json       data=../models/BSDS500_  keras=../models/model_RIDNET_BSDS500.keras       >> ../models/model_RIDNET_BSDS500.log
+
+# covert to tensorflow lite
+python3 modelUtils.py ../models/model_MLCNN_BSDS500.keras        tflite=../models/model_MLCNN_BSDS500.tflite        type=float16
+python3 modelUtils.py ../models/model_AutoEncoder_BSDS500.keras  tflite=../models/model_AutoEncoder_BSDS500.tflite  type=float16
+python3 modelUtils.py ../models/model_Unet_BSDS500.keras         tflite=../models/model_Unet_BSDS500.tflite         type=float16
+python3 modelUtils.py ../models/model_DNCNN_BSDS500.keras        tflite=../models/model_DNCNN_BSDS500.tflite        type=float16
+python3 modelUtils.py ../models/model_RIDNET_BSDS500.keras       tflite=../models/model_RIDNET_BSDS500.tflite       type=float16

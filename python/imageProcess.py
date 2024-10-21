@@ -114,7 +114,7 @@ def processImgGrid(img, model, overlap=0):
   skp_size  = (win_size[0] - overlap, win_size[1] - overlap)
   tensors   = imageSample.sampleFixed(img, win_size, skp_size)
   tensors   = tensors.astype(np.float32) / 255
-  results   = model.predict(tensors)
+  results   = modelUtils.run(model, tensors)
   results   = 255.0 * np.clip(results, 0.0, 1.0)
   results   = results.astype(np.uint8)
   if overlap==0:
@@ -153,6 +153,7 @@ def processFiles(src, model, params):
     head, tail = ntpath.split(file)
     out  = os.path.join(dst, prefix + tail)
     imageUtilsPIL.imageWrite(out, img)
+    print('finished' + out + '...')
 
 # command line interface
 if __name__ == "__main__":
